@@ -1,0 +1,50 @@
+<mxfile modified="2024-05-19T22:25:37.012Z" host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.4.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="Mzyk-yl-b__1AXN6C3MK" version="24.4.0" type="device">
+  <diagram id="l8hXMBHkgcEJcSW0mbfh" name="Page-1">
+    <mxGraphModel dx="1434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a3UX0Hi3I0JHOtYuWXv1-1" target="a3UX0Hi3I0JHOtYuWXv1-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-1" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="a3UX0Hi3I0JHOtYuWXv1-5" target="a3UX0Hi3I0JHOtYuWXv1-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-5" value="Servidor de aplicación" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;fontStyle=0;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="330" y="280" width="130" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-6" value="Gestor consultas" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" vertex="1" parent="a3UX0Hi3I0JHOtYuWXv1-5">
+          <mxGeometry width="100" height="60" relative="1" as="geometry">
+            <mxPoint x="10" y="50" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a3UX0Hi3I0JHOtYuWXv1-8" target="a3UX0Hi3I0JHOtYuWXv1-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a3UX0Hi3I0JHOtYuWXv1-8" target="a3UX0Hi3I0JHOtYuWXv1-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-8" value="Cliente" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;fontStyle=0;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="150" y="280" width="130" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-9" value="Interfaz" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" vertex="1" parent="a3UX0Hi3I0JHOtYuWXv1-8">
+          <mxGeometry width="100" height="40" relative="1" as="geometry">
+            <mxPoint x="10" y="50" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-12" value="Servidor DB" style="verticalAlign=top;align=center;shape=cube;size=10;direction=south;fontStyle=0;html=1;boundedLbl=1;spacingLeft=5;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="510" y="280" width="130" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-16" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="545" y="320" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a3UX0Hi3I0JHOtYuWXv1-19" value="" style="verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.printer;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="165" y="120" width="100" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
