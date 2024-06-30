@@ -1,81 +1,166 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Expediente {
-    private static int contadorExpedientes = 1; // Contador estático para IDs
-    private int idExpediente;
-    private int numeroExpediente;
-    private int anioExpediente;
-    private String actorExpediente;
-    private String demandadaExpediente;
-    private String objetoExpediente;
-    private List<Consulta> consultasExpediente;
+    private int id;
+    private int numero;
+    private int anio;
+    private String actor;
+    private String demandada;
+    private String objeto;
 
-    public Expediente(int numeroExpediente, int anioExpediente, String actorExpediente, String demandadaExpediente, String objetoExpediente) {
-        this.idExpediente = contadorExpedientes++;
-        this.numeroExpediente = numeroExpediente;
-        this.anioExpediente = anioExpediente;
-        this.actorExpediente = actorExpediente;
-        this.demandadaExpediente = demandadaExpediente;
-        this.objetoExpediente = objetoExpediente;
-        this.consultasExpediente = new ArrayList<>();
+    public Expediente(int id, int numero, int anio, String actor, String demandada, String objeto) {
+        this.id = id;
+        this.numero = numero;
+        this.anio = anio;
+        this.actor = actor;
+        this.demandada = demandada;
+        this.objeto = objeto;
     }
 
-    // Getters y Setters
-    public int getIdExpediente() {
-        return idExpediente;
+    public static void cargarExpediente(Connection conexion, Scanner scanner) {
+        try {
+            System.out.print("Ingrese el número del expediente: ");
+            int numero = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Ingrese el año del expediente: ");
+            int anio = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Ingrese el actor del expediente: ");
+            String actor = scanner.nextLine();
+
+            System.out.print("Ingrese la demandada del expediente: ");
+            String demandada = scanner.nextLine();
+
+            System.out.print("Ingrese el objeto del expediente: ");
+            String objeto = scanner.nextLine();
+
+            String sql = "INSERT INTO expedientes (numero, anio, actor, demandada, objeto) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+                pstmt.setInt(1, numero);
+                pstmt.setInt(2, anio);
+                pstmt.setString(3, actor);
+                pstmt.setString(4, demandada);
+                pstmt.setString(5, objeto);
+                pstmt.executeUpdate();
+                System.out.println("Expediente cargado exitosamente.");
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println("Error al cargar el expediente: " + e.getMessage());
+        }
     }
 
-    public int getNumeroExpediente() {
-        return numeroExpediente;
+    public static void listarExpedientes(Connection conexion) {
+        String sql = "SELECT * FROM expedientes";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            if (!rs.isBeforeFirst()) {
+                System.out.println("No hay expedientes cargados.");
+                return;
+            }
+            while (rs.next()) {
+                System.out.println(rs.getInt("id") + " - " + rs.getInt("numero") + "/" + rs.getInt("anio") + " - " +
+                        rs.getString("actor") + " c/ " + rs.getString("demandada") + " s/ " + rs.getString("objeto"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al listar expedientes: " + e.getMessage());
+        }
     }
 
-    public void setNumeroExpediente(int numeroExpediente) {
-        this.numeroExpediente = numeroExpediente;
+    public static void borrarExpediente(Connection conexion, Scanner scanner) {
+        listarExpedientes(conexion);
+        try {
+            System.out.print("Ingrese el ID del expediente a borrar (o 'Esc' para volver): ");
+            String input = scanner.nextLine();
+            if (input.equalsIgnoreCase("Esc")) return;
+            int idExpediente = Integer.parseInt(input);
+
+            String relacionados = verificarRegistrosRelacionados(conexion, idExpediente);
+            if (!relacionados.isEmpty()) {
+                if (relacionados.contains("apelados")) {
+                    System.out.print("El expediente tiene registros relacionados en apelados. ¿Desea borrar ambos? (Si/No): ");
+                    String confirmacion = scanner.nextLine();
+                    if (!confirmacion.equalsIgnoreCase("Si")) {
+                        System.out.println("Operación cancelada.");
+                        return;
+                    }
+                } else {
+                    System.out.println("No se puede borrar el expediente porque tiene registros relacionados: " + relacionados);
+                    return;
+                }
+            }
+
+            // Eliminar registros relacionados en 'aproyectar'
+            String sqlProyectos = "DELETE FROM aproyectar WHERE id_expediente = ?";
+            try (PreparedStatement pstmt = conexion.prepareStatement(sqlProyectos)) {
+                pstmt.setInt(1, idExpediente);
+                pstmt.executeUpdate();
+            }
+
+            // Eliminar registros relacionados en 'apelados'
+            String sqlApelados = "DELETE FROM apelados WHERE id_expediente = ?";
+            try (PreparedStatement pstmt = conexion.prepareStatement(sqlApelados)) {
+                pstmt.setInt(1, idExpediente);
+                pstmt.executeUpdate();
+            }
+
+            // Eliminar registros relacionados en 'consultas'
+            String sqlConsultas = "DELETE FROM consultas WHERE id_expediente = ?";
+            try (PreparedStatement pstmt = conexion.prepareStatement(sqlConsultas)) {
+                pstmt.setInt(1, idExpediente);
+                pstmt.executeUpdate();
+            }
+
+            // Eliminar el expediente
+            String sqlExpediente = "DELETE FROM expedientes WHERE id = ?";
+            try (PreparedStatement pstmt = conexion.prepareStatement(sqlExpediente)) {
+                pstmt.setInt(1, idExpediente);
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Expediente y registros relacionados borrados exitosamente.");
+                } else {
+                    System.out.println("Expediente no encontrado.");
+                }
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println("Error al borrar el expediente: " + e.getMessage());
+        }
     }
 
-    public int getAnioExpediente() {
-        return anioExpediente;
-    }
+    private static String verificarRegistrosRelacionados(Connection conexion, int idExpediente) throws SQLException {
+        StringBuilder relacionados = new StringBuilder();
 
-    public void setAnioExpediente(int anioExpediente) {
-        this.anioExpediente = anioExpediente;
-    }
+        String sql = "SELECT COUNT(*) AS total FROM consultas WHERE id_expediente = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idExpediente);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next() && rs.getInt("total") > 0) {
+                relacionados.append("consultas ");
+            }
+        }
 
-    public String getActorExpediente() {
-        return actorExpediente;
-    }
+        sql = "SELECT COUNT(*) AS total FROM apelados WHERE id_expediente = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idExpediente);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next() && rs.getInt("total") > 0) {
+                relacionados.append("apelados ");
+            }
+        }
 
-    public void setActorExpediente(String actorExpediente) {
-        this.actorExpediente = actorExpediente;
-    }
+        sql = "SELECT tipoProyectar FROM aproyectar WHERE id_expediente = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idExpediente);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String tipoProyectar = rs.getString("tipoProyectar");
+                relacionados.append(tipoProyectar.equalsIgnoreCase("a resolver") ? "a resolver " : "a sentencia ");
+            }
+        }
 
-    public String getDemandadaExpediente() {
-        return demandadaExpediente;
-    }
-
-    public void setDemandadaExpediente(String demandadaExpediente) {
-        this.demandadaExpediente = demandadaExpediente;
-    }
-
-    public String getObjetoExpediente() {
-        return objetoExpediente;
-    }
-
-    public void setObjetoExpediente(String objetoExpediente) {
-        this.objetoExpediente = objetoExpediente;
-    }
-
-    public List<Consulta> getConsultasExpediente() {
-        return consultasExpediente;
-    }
-
-    public void agregarConsulta(Consulta consulta) {
-        this.consultasExpediente.add(consulta);
-    }
-
-    @Override
-    public String toString() {
-        return idExpediente + " - " + numeroExpediente + "/" + anioExpediente + " - " + actorExpediente + " c/ " + demandadaExpediente + " s/ " + objetoExpediente;
+        return relacionados.toString().trim();
     }
 }
