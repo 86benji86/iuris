@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/* Clase Criterio, gestión de criterios generales del juzgado y su listado */
+
 public class Criterio {
     private int id;
     private String descripcion;

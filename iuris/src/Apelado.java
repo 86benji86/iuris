@@ -25,6 +25,8 @@ public class Apelado {
         this.devueltos = devueltos;
     }
 
+    /* Clase Apelado, gestiona fechas de apelaciones, notificaciones, elevaciones a cámara revisora y devolución */
+
     public static void cargarEstadoApelado(Connection conexion, Scanner scanner) {
         try {
             System.out.print("Ingrese el ID del expediente relacionado (o 'Esc' para volver): ");

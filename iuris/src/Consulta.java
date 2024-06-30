@@ -10,6 +10,8 @@ public class Consulta {
     private String consulta;
     private String respuesta;
 
+    /* Clase Consulta, gestiona las consultas y respuestas a estas */
+
     public Consulta(int id, int idExpediente, String consulta, String respuesta) {
         this.id = id;
         this.idExpediente = idExpediente;

@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/* Clase Main (controlador según el patrón MVC). Llama los metodos de las diversas clases */
+
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 

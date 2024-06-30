@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+/* Clase a proyectar, gestiona asignación de expedientes a relatores, tipo de proyectos (sentencias o resoluciones) y su listado */
+
 public class AProyectar {
     private int idExpediente;
     private String responsable;

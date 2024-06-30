@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/* Clase Expedientes, gestiona la carga, listado y borrado de estos. El resto de las clases relaciona con instancias de esta clase */
+
 public class Expediente {
     private int id;
     private int numero;
@@ -12,6 +14,7 @@ public class Expediente {
     private String demandada;
     private String objeto;
 
+    /* Constructor */
     public Expediente(int id, int numero, int anio, String actor, String demandada, String objeto) {
         this.id = id;
         this.numero = numero;
@@ -20,6 +23,8 @@ public class Expediente {
         this.demandada = demandada;
         this.objeto = objeto;
     }
+
+    /* Metodos para gestionar cada expediente: carga, listado, borrado */
 
     public static void cargarExpediente(Connection conexion, Scanner scanner) {
         try {
@@ -91,6 +96,8 @@ public class Expediente {
                     return;
                 }
             }
+
+            // Controles previo a borrar, por integridad de la BD
 
             // Eliminar registros relacionados en 'aproyectar'
             String sqlProyectos = "DELETE FROM aproyectar WHERE id_expediente = ?";
